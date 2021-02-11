@@ -48,14 +48,19 @@ exports.putScore = (req, res) => {
     user: req.body.user._id,
     avgScore: avgScore
   })
-  score.save((err, score)=>{
-    if(err){
-      return res.status(400).json({
-        err:"Unable to add Score in DB"
-      })
-    }
-    res.json(score);
-  })
+  if(score.firstRound >10 || score.secondRound > 10 || score.thirdRound > 10){
+    res.json({messge: "Score should not be greater than 10"})
+  }else{
+    score.save((err, score)=>{
+      if(err){
+        return res.status(400).json({
+          err:"Unable to add Score in DB"
+        })
+      }
+      res.json(score);
+    })
+  }
+
 }
 
 exports.getAllUserScore = (req, res) => {
